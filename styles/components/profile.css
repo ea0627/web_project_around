@@ -73,6 +73,7 @@
 
 @media screen and (min-width: 769px) and (max-width: 1024px) {
     .profile {
+        width: 80%;
         max-width: 100%;
         padding: 40px 100px;
         flex-direction: row;
@@ -118,6 +119,7 @@
 
 @media screen and (min-width: 1025px){
     .profile {
+        width: 80%;
         max-width: 100%;
         padding: 40px 100px;
         flex-direction: row;
@@ -133,7 +135,7 @@
     }
 
     .profile__add-button{
-        width: 150px;
+        width: 200px;
         height: 50px;
     }
 
