@@ -49,16 +49,21 @@
 .element__like-button {
   width: 22px;
   height: 19px;
-  background: url("../images/like-icon.svg") no-repeat center;
+  background: url("../../images/heart.png") no-repeat center;
   background-size: contain;
   border: none;
   cursor: pointer;
 }
 
 .element__like-button:hover {
-  content: url("../images/like-icon-hover.svg");
+  content: url("../../images/heart-hover.svg");
   opacity: 0.6;
 }
+
+.element__like-button_active {
+  background-image: url("../images/heart-active.svg");
+}
+
 
 @media screen and (min-width: 768px)  and (max-width: 1024px) {
   .elements {
