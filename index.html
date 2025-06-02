@@ -81,5 +81,22 @@
       <p class="footer__text">&copy; 2025 Around The U.S.</p>
     </footer>
     <script src="scripts/index.js"></script>
+
+    <div class="popup popup_type_edit-profile">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button" aria-label="Cerrar ventana"></button>
+        <h2 class="popup__title">Editar perfil</h2>
+        <form class="form" name="editProfileForm" novalidate>
+          <input type="text" name="name" class="form__input" placeholder="Nombre" required minlength="2" maxlength="40" />
+          <span class="form__input-error name-error"></span>
+
+          <input type="text" name="about" class="form__input" placeholder="Acerca de mí" required minlength="2" maxlength="200" />
+          <span class="form__input-error about-error"></span>
+
+          <button type="submit" class="form__submit-button">Guardar</button>
+        </form>
+      </div>
+    </div>
+
   </body>
 </html>
