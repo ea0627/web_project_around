@@ -16,12 +16,16 @@
 }
 
 .profile__info {
+  display: flex;
+  flex-direction: column;
+
   flex-grow: 1;
-  padding-top: 30px;
+  padding-top: 30px; 
 }
 
 .profile__header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 18px;
 }
