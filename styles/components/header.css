@@ -1,0 +1,27 @@
+.page{
+    background-color: #000000;
+}
+
+.header{
+    padding: 28px 27px;
+    border-bottom: 2px solid #545454;
+    margin: 0 auto;
+}
+
+.header__logo{
+    width: 126px;
+    height: 24px;
+}
+
+@media screen and (min-width: 768px){
+    .header{
+        padding: 45px 0;
+        border-bottom: 2px solid #545454;
+        width: 80%;
+    }
+
+    .header__logo{
+        width: 173px;
+        height: 33px;
+    }
+}
