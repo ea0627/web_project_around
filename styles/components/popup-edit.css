@@ -30,6 +30,11 @@
   cursor: pointer;
 }
 
+.popup__close-button:hover {
+  background: url('../../images/close-icon-hover.png') no-repeat center;
+  cursor: pointer;
+}
+
 .popup__title {
   margin: 0 0 36px;
   font-size: 24px;
@@ -56,6 +61,10 @@
   border: none;
   border-radius: 2px;
   cursor: pointer;
+}
+
+.form__submit-button:hover {
+  background-color: #545454;
 }
 
 @media screen and (min-width: 768px) {
