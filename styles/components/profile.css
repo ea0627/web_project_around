@@ -26,7 +26,7 @@
 .profile__header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center;*/
   gap: 18px;
 }
 
@@ -87,7 +87,7 @@
         max-width: 100%;
         padding: 40px 100px;
         flex-direction: row;
-        justify-content:space-around;
+        justify-content:space-between;
         gap: 30px; 
     }
 
@@ -96,6 +96,18 @@
         height: 120px;
         border-radius: 50%;
         object-fit: cover;
+    }
+
+    .profile__header {
+      display: flex;
+      
+    }
+
+    .profile__info {
+      display: flex;
+      flex-direction: column;
+
+      padding-top: 0; 
     }
 
     .profile__add-button{
@@ -133,7 +145,7 @@
         max-width: 100%;
         padding: 40px 100px;
         flex-direction: row;
-        justify-content:space-around;
+        justify-content:space-between;
         gap: 30px; 
     }
 
@@ -142,6 +154,10 @@
         height: 180px;
         border-radius: 50%;
         object-fit: cover;
+    }
+
+    .profile__info {
+      padding-top: 0; 
     }
 
     .profile__add-button{
