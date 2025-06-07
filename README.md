@@ -1,29 +1,31 @@
-# 🗺️ Alrededor de los EE.UU. — Sprint 7
+# 📸 Proyecto Sprint 7: Alrededor de los EE.UU.
 
-Proyecto desarrollado como parte del **Sprint 7 del Bootcamp TripleTen**, enfocado en la maquetación web responsive y estructura modular con CSS.
-
----
-
-## 🚀 Descripción
-
-Este sitio simula una galería de viajes inspirada en Jacques Cousteau, mostrando tarjetas interactivas con imágenes, títulos y un botón de "like". Incluye funcionalidades con JavaScript vanilla y diseño responsive para dispositivos móviles, tablets y escritorio.
+Este proyecto representa una galería interactiva de fotografías con diseño responsivo, construido en el Sprint 7 del bootcamp de desarrollo web de TripleTen. El usuario puede editar su perfil y dar “me gusta” a las tarjetas de la galería.
 
 ---
 
-## 🔧 Estado del Proyecto
+## 🔗 Vista en vivo
 
-✅ Diseño visual completo según Figma  
-✅ Funcionalidades JavaScript:  
-- Modal para editar el perfil  
-- Botón de "me gusta" con interacción  
-- Estructura modular con `BEM`  
-🔄 Mejoras posibles: validación de formularios, almacenamiento local, mejoras de accesibilidad
+👉 [Ver el proyecto en GitHub Pages](https://ea0627.github.io/web_project_around/)
 
 ---
 
-## 📸 Vista Previa
+## 🛠️ Tecnologías usadas
 
-🔗 [Visualizar proyecto en GitHub Pages](https://ea0627.github.io/web_project_around/)
+- HTML5 + CSS3
+- JavaScript Vanilla (JS puro)
+- Responsive Design (media queries)
+- Metodología BEM
+- Git + GitHub Pages
+
+---
+
+## ✅ Estado del proyecto
+
+- 🎨 Diseño completado según Figma
+- 🖱️ Funcionalidad JS básica implementada (editar perfil, likes)
+- 📱 Totalmente responsive (mobile, tablet y desktop)
+- 🚀 Desplegado en producción y funcionando correctamente
 
 ---
 
@@ -43,19 +45,32 @@ web_project_around/
 
 ---
 
-## 🧑 Autor
+
+---
+
+## 📸 Captura de pantalla
+
+![Vista previa](./images/screenshot.png) <!-- Agrega una captura en tu repo -->
+
+---
+
+## 👨‍💻 Autor
 
 **Eduardo Amaya**  
-🎓 Bootcamp TripleTen — Colombia  
-📍 Frontend Developer en formación
+Desarrollador Web Junior  
+Bootcamp TripleTen – Sprint 7  
+
+📬 eduardo.amaya627@gmail.com  
+🔗 [GitHub @ea0627](https://github.com/ea0627)
 
 ---
 
-## 📬 Contacto
+## 📌 Notas adicionales
 
-- GitHub: [ea0627](https://github.com/ea0627)
-- Email: [eduardo.amaya627@gmail.com](mailto:eduardo.amaya627@gmail.com)
+- El sitio fue desplegado desde la rama `main` usando GitHub Pages.
+- Todas las rutas fueron ajustadas para funcionar correctamente en producción.
+- Se planea agregar mejoras como validación de formularios o almacenamiento local.
 
 ---
 
-> Gracias por visitar este proyecto. Seguimos construyendo el futuro en código. 💻✨
+> Gracias por visitar este proyecto. ¡Seguimos creciendo con código! 💻✨
