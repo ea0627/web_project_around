@@ -1,0 +1,7 @@
+@import url('./blocks/normalize.css');
+@import url('./blocks/fonts.css');
+@import url('./blocks/components/header.css');
+@import url('./blocks/components/profile.css');
+@import url('./blocks/components/elements.css');
+@import url('./blocks/components/footer.css');
+@import url('./blocks/components/popup-edit.css');
