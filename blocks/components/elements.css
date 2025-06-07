@@ -1,49 +1,57 @@
-.elements{
-    display: grid;
-    flex-direction: column;
-    max-width: 100%;
+.elements {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
 }
 
 .elements__list {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 40px 19px;
-    gap: 20px;
-    justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr;      /* Una sola columna en mobile */
+  gap: 20px;
+  padding: 0 19px;                 /* Espacio lateral en móviles */
+  margin: 0 auto;
+  max-width: 100%;
+  list-style: none;
 }
 
 .element {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background-color: white;
-    border-radius: 10px;
+  width: 100%;
+  max-width: 100%;                /* Máximo ancho de la tarjeta */
+  background-color: white;
+  border-radius: 10px;
+  margin: 0 auto;                  /* Centrar cada tarjeta */
+  display: flex;
+  flex-direction: column;
 }
 
 .element__image {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .element__footer {
   display: flex;
-    background-color: #fff;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    padding: 35px 20px;
-    justify-content: space-between;
-    align-items:baseline;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .element__title {
-  font-size: 26px;
+  font-size: 18px;
   font-weight: 900;
   margin: 0;
-  white-space: nowrap;         /* Todo en una sola línea */
-  overflow: hidden;            /* Oculta el desbordamiento */
-  text-overflow: ellipsis;     /* Agrega los "..." al final */
-  max-width: 90%;              /* Opcional para evitar que ocupe el 100% */
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 90%;
 }
 
 .element__like-button {
@@ -65,35 +73,42 @@
 }
 
 
-@media screen and (min-width: 768px)  and (max-width: 1024px) {
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
   .elements {
     width: 80%;
-    max-width: 100%;
-    padding: 40px 100px;
-    justify-content:space-around;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    /* background-color: aqua; */
   }
 
   .elements__list {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas del mismo tamaño */
-    grid-template-rows: repeat(2, auto);   /* 2 filas con altura automática */
-    gap: 24px;                             /* espacio entre tarjetas */
-    justify-items: center;                 /* centra cada tarjeta dentro de su celda */
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas para evitar scroll */
+    /*gap: 24px;*/
+    justify-items: center;
     list-style: none;
-    /* margin: 0 auto; */
-    padding: 0
+    margin: 0 auto;
+    /*padding: 0 16px;*/
+    max-width: 100%;
   }
 
   .element {
-    max-width: 282px;
+    width: 100%;
+    max-width: 282px; /* ✅ Controla el ancho de cada tarjeta */
+    margin: 0 auto;
   }
 
   .element__title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
     margin: 0;
+    white-space: nowrap;
+    max-width: 90%;
   }
 }
 
@@ -103,9 +118,13 @@
     width: 80%;
     margin: 0 auto;
     max-width: 100%;
-    padding: 40px 100px;
+    /*padding: 40px 100px;*/
     justify-content:space-around;
     /* background-color: aqua; */
+  }
+
+  .element {
+    max-width: 100%;
   }
 
   .elements__list {
@@ -119,5 +138,7 @@
   .element__title {
     font-size: 24px;
     font-weight: 900;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

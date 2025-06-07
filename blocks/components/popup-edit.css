@@ -68,6 +68,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .popup {
+    padding: 0;
+  }
+
   .popup__close-button {
     top: -40px;
     right: -40px;

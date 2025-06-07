@@ -84,7 +84,7 @@
     .profile {
         width: 80%;
         max-width: 100%;
-        padding: 40px 100px;
+        padding: 40px 0;
         flex-direction: row;
         justify-content:space-between;
         gap: 30px; 
@@ -130,7 +130,7 @@
     .profile {
         width: 80%;
         max-width: 100%;
-        padding: 40px 100px;
+        padding: 40px 0;
         flex-direction: row;
         justify-content:space-between;
         gap: 30px; 
