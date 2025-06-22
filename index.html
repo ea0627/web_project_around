@@ -31,7 +31,7 @@
     </section>
     <section class="elements">
       <ul class="elements__list">
-        <li class="element">
+        <!-- <li class="element">
             <img src="./images/valle-de-yosemite.png" alt="Valle de yosemite" class="element__image">
             <div class="element__footer">
                 <h2 class="element__title">Valle de Yosemite</h2>
@@ -78,7 +78,7 @@
                 <button class="element__like-button" type="button"></button>
             </div>
         </li>
-          <!-- Puedes duplicar el <li> para más tarjetas -->
+          -->
       </ul>
     </section>
     <footer class="footer">
@@ -102,7 +102,30 @@
       </div>
     </div>
 
-    <script src="./scripts/index.js"></script>
+    <template id="card-template">
+      <li class="element">
+        <img class="element__image" src="#" alt="">
+        <button type="button" class="element__trash-button" aria-label="Eliminar"></button>
+        <div class="element__footer">
+          <h2 class="element__title"></h2>
+          <button class="element__like-button" type="button"></button>
+        </div>
+      </li>
+    </template>
+
+    <div class="popup popup_type_add-card">
+      <div class="popup__container">
+        <button type="button" class="popup__close-button" aria-label="Cerrar"></button>
+        <h2 class="popup__title">Nuevo lugar</h2>
+        <form name="addCardForm" class="form" novalidate>
+          <input type="text" name="title" placeholder="Título" class="form__input" required minlength="1" maxlength="30" />
+          <input type="url" name="link" placeholder="Enlace a la imagen" class="form__input" required />
+          <button type="submit" class="form__submit">Crear</button>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./scripts/index.js"></script>
 
   </body>
 </html>

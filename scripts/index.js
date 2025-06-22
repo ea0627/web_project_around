@@ -2,7 +2,7 @@
 // VARIABLES DEL POPUP
 // =======================
 
-// Seleccionamos el popup de edición de perfil
+// Popup de edición de perfil
 const popup = document.querySelector('.popup_type_edit-profile');
 
 // Botón de abrir y cerrar
@@ -14,35 +14,99 @@ const form = document.forms.editProfileForm;
 const nameInput = form.elements.name;
 const aboutInput = form.elements.about;
 
-// Elementos del perfil
+// Elementos visibles del perfil
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
 // =======================
-// FUNCIONES
+// FUNCIONES DEL POPUP
 // =======================
 
-// Abre el popup y precarga los valores actuales
 function openPopup() {
   nameInput.value = profileName.textContent;
   aboutInput.value = profileDescription.textContent;
   popup.style.display = 'flex';
 }
 
-// Cierra el popup
 function closePopup() {
   popup.style.display = 'none';
 }
 
-// Guarda los cambios y actualiza el DOM
 function handleFormSubmit(evt) {
-  evt.preventDefault(); // Evita recargar la página
+  evt.preventDefault();
 
   profileName.textContent = nameInput.value;
   profileDescription.textContent = aboutInput.value;
 
-  closePopup(); // Cierra el popup después de guardar
+  closePopup();
 }
+
+// =======================
+// FUNCIONES DE TARJETAS
+// =======================
+
+const initialCards = [
+  {
+    name: "Valle de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/yosemite.jpg"
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lake-louise.jpg"
+  },
+  {
+    name: "Montañas Calvas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/bald-mountains.jpg"
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/latemar.jpg"
+  },
+  {
+    name: "Parque Nacional de la Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/vanoise.jpg"
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/ES/lago.jpg"
+  }
+];
+
+// Función para crear cada tarjeta
+function createCard(name, link) {
+  const template = document.querySelector('#card-template').content.cloneNode(true);
+  const cardElement = template.querySelector('.element');
+
+  const image = cardElement.querySelector('.element__image');
+  const title = cardElement.querySelector('.element__title');
+  const likeButton = cardElement.querySelector('.element__like-button');
+  const deleteButton = cardElement.querySelector('.element__trash-button');
+
+  image.src = link;
+  image.alt = name;
+  title.textContent = name;
+
+  // Activar botón de "me gusta"
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('element__like-button_active');
+  });
+
+  // Activar botón de eliminar tarjeta
+  deleteButton.addEventListener('click', () => {
+    cardElement.remove(); // ⬅ Elimina el <li> completo
+  });
+
+  return cardElement;
+}
+
+// Contenedor de tarjetas
+const cardsContainer = document.querySelector('.elements__list');
+
+// Renderizar tarjetas iniciales
+initialCards.forEach((card) => {
+  const cardElement = createCard(card.name, card.link);
+  cardsContainer.append(cardElement);
+});
 
 // =======================
 // EVENTOS
@@ -52,12 +116,36 @@ openButton.addEventListener('click', openPopup);
 closeButton.addEventListener('click', closePopup);
 form.addEventListener('submit', handleFormSubmit);
 
+// =======================
+// POPUP PARA AGREGAR TARJETA
+// =======================
 
-// Selecciona todos los botones de like
-const likeButtons = document.querySelectorAll('.element__like-button');
+const popupAddCard = document.querySelector('.popup_type_add-card');
+const openAddButton = document.querySelector('.profile__add-button');
+const closeAddButton = popupAddCard.querySelector('.popup__close-button');
+const formAddCard = document.forms.addCardForm;
 
-likeButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    button.classList.toggle('element__like-button_active');
-  });
-});
+const titleInput = formAddCard.elements.title;
+const linkInput = formAddCard.elements.link;
+
+function openAddCardPopup() {
+  formAddCard.reset(); // limpia el formulario
+  popupAddCard.style.display = 'flex';
+}
+
+function closeAddCardPopup() {
+  popupAddCard.style.display = 'none';
+}
+
+function handleAddCardSubmit(evt) {
+  evt.preventDefault();
+
+  const newCard = createCard(titleInput.value, linkInput.value);
+  cardsContainer.prepend(newCard); // ⬅ agrega arriba
+
+  closeAddCardPopup();
+}
+
+openAddButton.addEventListener('click', openAddCardPopup);
+closeAddButton.addEventListener('click', closeAddCardPopup);
+formAddCard.addEventListener('submit', handleAddCardSubmit);

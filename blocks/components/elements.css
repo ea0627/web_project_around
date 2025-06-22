@@ -1,6 +1,5 @@
 .elements {
   width: 100%;
-  max-width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -9,29 +8,46 @@
 
 .elements__list {
   display: grid;
-  grid-template-columns: 1fr;      /* Una sola columna en mobile */
+  grid-template-columns: 1fr; /* Una sola columna en mobile */
   gap: 20px;
-  padding: 0 19px;                 /* Espacio lateral en móviles */
+  padding: 0 19px;
   margin: 0 auto;
-  max-width: 100%;
   list-style: none;
+  max-width: 880px;
 }
 
 .element {
+  position: relative; /* ✅ Necesario para posicionar el botón trash */
   width: 100%;
-  max-width: 100%;                /* Máximo ancho de la tarjeta */
+  max-width: 282px;
   background-color: white;
   border-radius: 10px;
-  margin: 0 auto;                  /* Centrar cada tarjeta */
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 }
 
 .element__image {
   width: 100%;
-  height: auto;
+  height: 282px;
+  object-fit: cover;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  display: block;
+}
+
+/* ✅ Botón de eliminar tarjeta (caneca) */
+.element__trash-button {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 18px;
+  height: 19px;
+  background: url("../../images/trash.png") no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .element__footer {
@@ -72,73 +88,38 @@
   background-image: url("../../images/heart-active.png");
 }
 
-
-
+/* TABLET */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .elements {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     align-items: center;
   }
 
   .elements__list {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas para evitar scroll */
-    /*gap: 24px;*/
+    grid-template-columns: repeat(2, 1fr);
     justify-items: center;
-    list-style: none;
-    margin: 0 auto;
-    /*padding: 0 16px;*/
-    max-width: 100%;
-  }
-
-  .element {
-    width: 100%;
-    max-width: 282px; /* ✅ Controla el ancho de cada tarjeta */
-    margin: 0 auto;
-  }
-
-  .element__title {
-    font-size: 22px;
-    font-weight: 700;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
-    white-space: nowrap;
-    max-width: 90%;
+    padding: 0;
   }
 }
 
+/* DESKTOP */
 @media screen and (min-width: 1024px) {
-
   .elements {
-    width: 80%;
     margin: 0 auto;
+    width: 80%;
     max-width: 100%;
-    /*padding: 40px 100px;*/
-    justify-content:space-around;
-    /* background-color: aqua; */
-  }
-
-  .element {
-    max-width: 100%;
+    justify-content: space-between;
   }
 
   .elements__list {
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
-    justify-items: center;
+    justify-content: space-between;
     padding: 0;
   }
 
   .element__title {
     font-size: 24px;
     font-weight: 900;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
