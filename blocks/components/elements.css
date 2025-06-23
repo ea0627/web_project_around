@@ -1,23 +1,25 @@
 .elements {
   width: 100%;
+  padding: 20px 19px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 20px 0;
+  align-items: center;
 }
 
 .elements__list {
   display: grid;
-  grid-template-columns: 1fr; /* Una sola columna en mobile */
+  grid-template-columns: 1fr;
   gap: 20px;
-  padding: 0 19px;
-  margin: 0 auto;
   list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
   max-width: 880px;
 }
 
 .element {
-  position: relative; /* ✅ Necesario para posicionar el botón trash */
+  position: relative;
   width: 100%;
   max-width: 282px;
   background-color: white;
@@ -36,7 +38,6 @@
   display: block;
 }
 
-/* ✅ Botón de eliminar tarjeta (caneca) */
 .element__trash-button {
   position: absolute;
   top: 18px;
@@ -89,37 +90,26 @@
 }
 
 /* TABLET */
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media screen and (min-width: 768px) {
   .elements {
-    width: 100%;
-    align-items: center;
+    width: 80%;
+    max-width: 100%;
+    padding: 20px 0;
   }
 
   .elements__list {
     grid-template-columns: repeat(2, 1fr);
-    justify-items: center;
-    padding: 0;
+    gap: 24px;
   }
 }
 
 /* DESKTOP */
 @media screen and (min-width: 1024px) {
-  .elements {
-    margin: 0 auto;
-    width: 80%;
-    max-width: 100%;
-    justify-content: space-between;
-  }
-
   .elements__list {
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    justify-content: space-between;
-    padding: 0;
   }
 
   .element__title {
     font-size: 24px;
-    font-weight: 900;
   }
 }

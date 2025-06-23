@@ -5,6 +5,9 @@
 @import url('../blocks/components/elements.css');
 @import url('../blocks/components/footer.css');
 @import url('../blocks/components/popup-edit.css');
+@import url("../blocks/components/popup-crear.css");
+@import url("../blocks/components/popup-image.css");
+
 
 html, body {
   margin: 0;

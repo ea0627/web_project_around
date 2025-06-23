@@ -96,6 +96,11 @@ function createCard(name, link) {
     cardElement.remove(); // ⬅ Elimina el <li> completo
   });
 
+  image.addEventListener('click', () => {
+    openImagePopup(name, link);
+  });
+
+
   return cardElement;
 }
 
@@ -149,3 +154,39 @@ function handleAddCardSubmit(evt) {
 openAddButton.addEventListener('click', openAddCardPopup);
 closeAddButton.addEventListener('click', closeAddCardPopup);
 formAddCard.addEventListener('submit', handleAddCardSubmit);
+
+// =========================
+// POPUP DE IMAGEN AMPLIADA
+// =========================
+
+// Selección de elementos
+const imagePopup = document.querySelector('.popup_type_image');
+const popupImage = imagePopup.querySelector('.popup__image');
+const popupCaption = imagePopup.querySelector('.popup__caption');
+const popupCloseImageButton = imagePopup.querySelector('.popup__close-button');
+
+// Función para abrir el popup con imagen
+function openImagePopup(name, link) {
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupCaption.textContent = name;
+
+  imagePopup.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // bloquea scroll del fondo
+}
+
+// Función para cerrar el popup
+function closeImagePopup() {
+  imagePopup.style.display = 'none';
+  document.body.style.overflow = 'auto'; // restaura scroll
+}
+
+// Evento de cerrar
+popupCloseImageButton.addEventListener('click', closeImagePopup);
+
+// Cerrar el popup de imagen haciendo clic en el fondo oscuro
+imagePopup.addEventListener('click', (evt) => {
+  if (evt.target === imagePopup) {
+    closeImagePopup();
+  }
+});
