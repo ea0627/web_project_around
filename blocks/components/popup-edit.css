@@ -67,6 +67,22 @@
   background-color: #545454;
 }
 
+.button_inactive {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.form__input-error_active {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.form__input_type_error {
+  border: 1px solid red;
+}
+
+
 @media screen and (min-width: 768px) {
   .popup {
     padding: 0;

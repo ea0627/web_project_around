@@ -190,3 +190,68 @@ imagePopup.addEventListener('click', (evt) => {
     closeImagePopup();
   }
 });
+
+// --------------------------------------------//
+
+// ---- Validación del formulario Editar perfil ----
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.form'));
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => evt.preventDefault());
+
+    const inputList = Array.from(formElement.querySelectorAll('.form__input'));
+    const buttonElement = formElement.querySelector('.form__submit-button');
+
+    // Comprueba el estado inicial del botón
+    toggleButtonState(inputList, buttonElement);
+
+    // Añade listeners para validar inputs en tiempo real
+    inputList.forEach((inputElement) => {
+      inputElement.addEventListener('input', () => {
+        checkInputValidity(formElement, inputElement);
+        toggleButtonState(inputList, buttonElement);
+      });
+    });
+  });
+};
+
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add('form__input_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('form__input-error_active');
+};
+
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove('form__input_type_error');
+  errorElement.classList.remove('form__input-error_active');
+  errorElement.textContent = '';
+};
+
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+
+const hasInvalidInput = (inputList) => {
+  return inputList.some(inputElement => !inputElement.validity.valid);
+};
+
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add('button_inactive');
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove('button_inactive');
+    buttonElement.disabled = false;
+  }
+};
+
+// Lanza la validación en todos los formularios con clase .form
+enableValidation();
+
