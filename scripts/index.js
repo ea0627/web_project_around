@@ -269,3 +269,31 @@ popups.forEach((popup) => {
   });
 });
 
+//document.addEventListener('keydown', (evt) => {
+  //console.log('Cerrando popup');
+  //if (evt.key === 'Escape') {
+    //const openedPopup = document.querySelector('.popup:is([style*="display: flex"], .popup_opened)');
+    //console.log('Encontrado:', openedPopup); // Ver qué encontró
+    //if (openedPopup) {
+      //closePopup(openedPopup);
+      //console.log('Cerrado manualmente');
+    //}
+  //}
+//});
+
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') {
+    const popups = document.querySelectorAll('.popup');
+
+    popups.forEach((popup) => {
+      const styles = window.getComputedStyle(popup);
+      if (styles.display === 'flex') {
+        console.log('Popup visible:', popup);
+        popup.style.display = 'none'; // este debería cerrar
+        console.log('Popup cerrado manualmente');
+      }
+    });
+  }
+});
+
+
