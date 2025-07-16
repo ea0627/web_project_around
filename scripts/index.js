@@ -2,6 +2,9 @@
 // VARIABLES DEL POPUP
 // =======================
 
+// Cierra todos los popups al hacer clic en el fondo oscuro
+const popups = document.querySelectorAll('.popup');
+
 // Popup de edición de perfil
 const popup = document.querySelector('.popup_type_edit-profile');
 
@@ -40,6 +43,8 @@ function handleFormSubmit(evt) {
 
   closePopup();
 }
+
+
 
 // =======================
 // FUNCIONES DE TARJETAS
@@ -254,4 +259,13 @@ const toggleButtonState = (inputList, buttonElement) => {
 
 // Lanza la validación en todos los formularios con clase .form
 enableValidation();
+
+//Recorrer todos los popups y añadir evento de cierre al hacer clic en el fondo
+popups.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      popup.style.display = 'none';
+    }
+  });
+});
 
