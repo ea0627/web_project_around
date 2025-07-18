@@ -1,6 +1,6 @@
-# 📸 Proyecto Sprint 7: Alrededor de los EE.UU.
+# 📸 Proyecto Sprint 9: Alrededor de los EE.UU.
 
-Este proyecto representa una galería interactiva de fotografías con diseño responsivo, construido en el Sprint 7 del bootcamp de desarrollo web de TripleTen. El usuario puede editar su perfil y dar “me gusta” a las tarjetas de la galería.
+Este proyecto representa una galería interactiva de fotografías con diseño responsivo, iniciada en el Sprint 7 del bootcamp de desarrollo web de **TripleTen**. Ha evolucionado hasta el Sprint 9, incorporando validaciones en formularios, modularización del código, y una mejor experiencia de usuario.
 
 ---
 
@@ -10,22 +10,28 @@ Este proyecto representa una galería interactiva de fotografías con diseño re
 
 ---
 
-## 🛠️ Tecnologías usadas
+## ⚙️ Funcionalidades implementadas
 
-- HTML5 + CSS3
-- JavaScript Vanilla (JS puro)
-- Responsive Design (media queries)
-- Metodología BEM
-- Git + GitHub Pages
+- ✏️ Editar el perfil del usuario con validación de campos (nombre y ocupación).
+- ➕ Agregar nuevas tarjetas mediante formulario validado (título + URL).
+- ✅ Validación en tiempo real con mensajes nativos del navegador.
+- 🔒 Botón de envío desactivado hasta que los campos sean válidos.
+- 🖼️ Vista ampliada de imágenes al hacer clic.
+- 🗑️ Eliminar tarjetas de la galería.
+- ❤️ Marcar tarjetas como favoritas ("me gusta").
+- ❌ Cierre de ventanas emergentes (popups) con tecla `Esc` y clic en el fondo.
+- 🧼 Reset automático de validación al abrir formularios.
+- 🧩 Modularización del JS: `validate.js`, `constants.js`, `index.js`
 
 ---
 
-## ✅ Estado del proyecto
+## 🛠️ Tecnologías usadas
 
-- 🎨 Diseño completado según Figma
-- 🖱️ Funcionalidad JS básica implementada (editar perfil, likes)
-- 📱 Totalmente responsive (mobile, tablet y desktop)
-- 🚀 Desplegado en producción y funcionando correctamente
+- HTML5 + CSS3
+- JavaScript (ES6)
+- Responsive Design con Media Queries
+- BEM (Block Element Modifier)
+- Git + GitHub Pages
 
 ---
 
@@ -33,24 +39,22 @@ Este proyecto representa una galería interactiva de fotografías con diseño re
 
 ```
 web_project_around/
-├── blocks/             # Archivos CSS por bloque (profile, elements, footer...)
-├── images/             # Imágenes del proyecto
-├── pages/    
+├── blocks/             # CSS organizado por bloques BEM
+├── images/             # Recursos gráficos
+├── pages/              # CSS principal
 ├── scripts/
-│   └── index.js        # Funcionalidad principal en JS
+│   └── index.js        # Lógica principal del sitio
+│   ├── validate.js     # Módulo de validación de formularios
+│   └── constants.js    # Tarjetas iniciales exportadas como constante
 ├── index.html          # Archivo HTML principal
-├── index.css           # Archivo CSS principal que importa todo
 └── README.md
 ```
 
 ---
 
-
----
-
 ## 📸 Captura de pantalla
 
-![Vista previa](./images/screenshot.png) <!-- Agrega una captura en tu repo -->
+![Vista previa](./images/screenshot.png)
 
 ---
 
