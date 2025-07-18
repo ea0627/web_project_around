@@ -1,3 +1,7 @@
+// web_project_around/scripts/index.js
+import { enableValidation, toggleButtonState } from './validate.js';
+
+
 // =======================
 // VARIABLES DEL POPUP
 // =======================
@@ -141,6 +145,14 @@ const linkInput = formAddCard.elements.link;
 function openAddCardPopup() {
   formAddCard.reset(); // limpia el formulario
   popupAddCard.style.display = 'flex';
+
+    // Recupera botón y inputs
+  const inputList = Array.from(formAddCard.querySelectorAll('.popup__input'));
+  const buttonElement = formAddCard.querySelector('.popup__button');
+
+  // Verifica el estado del botón
+  toggleButtonState(inputList, buttonElement);
+
 }
 
 function closeAddCardPopup() {
@@ -196,70 +208,6 @@ imagePopup.addEventListener('click', (evt) => {
   }
 });
 
-// --------------------------------------------//
-
-// ---- Validación del formulario Editar perfil ----
-
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => evt.preventDefault());
-
-    const inputList = Array.from(formElement.querySelectorAll('.form__input'));
-    const buttonElement = formElement.querySelector('.form__submit-button');
-
-    // Comprueba el estado inicial del botón
-    toggleButtonState(inputList, buttonElement);
-
-    // Añade listeners para validar inputs en tiempo real
-    inputList.forEach((inputElement) => {
-      inputElement.addEventListener('input', () => {
-        checkInputValidity(formElement, inputElement);
-        toggleButtonState(inputList, buttonElement);
-      });
-    });
-  });
-};
-
-const showInputError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('form__input_type_error');
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('form__input-error_active');
-};
-
-const hideInputError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('form__input_type_error');
-  errorElement.classList.remove('form__input-error_active');
-  errorElement.textContent = '';
-};
-
-const checkInputValidity = (formElement, inputElement) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
-  } else {
-    hideInputError(formElement, inputElement);
-  }
-};
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some(inputElement => !inputElement.validity.valid);
-};
-
-const toggleButtonState = (inputList, buttonElement) => {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add('button_inactive');
-    buttonElement.disabled = true;
-  } else {
-    buttonElement.classList.remove('button_inactive');
-    buttonElement.disabled = false;
-  }
-};
-
-// Lanza la validación en todos los formularios con clase .form
-enableValidation();
-
 //Recorrer todos los popups y añadir evento de cierre al hacer clic en el fondo
 popups.forEach((popup) => {
   popup.addEventListener('click', (evt) => {
@@ -268,18 +216,6 @@ popups.forEach((popup) => {
     }
   });
 });
-
-//document.addEventListener('keydown', (evt) => {
-  //console.log('Cerrando popup');
-  //if (evt.key === 'Escape') {
-    //const openedPopup = document.querySelector('.popup:is([style*="display: flex"], .popup_opened)');
-    //console.log('Encontrado:', openedPopup); // Ver qué encontró
-    //if (openedPopup) {
-      //closePopup(openedPopup);
-      //console.log('Cerrado manualmente');
-    //}
-  //}
-//});
 
 document.addEventListener('keydown', (evt) => {
   if (evt.key === 'Escape') {
@@ -296,4 +232,11 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-
+console.log("▶ Ejecutando enableValidation con config");
+enableValidation({
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible"
+});

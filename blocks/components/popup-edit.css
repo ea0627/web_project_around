@@ -7,6 +7,7 @@
   justify-content: center;
   align-items: center;
   padding: 0 19px;
+  z-index: 1000;
 }
 
 .popup__container {
@@ -42,7 +43,7 @@
   text-align: center;
 }
 
-.form__input {
+.popup__input {
   display: block;
   width: 100%;
   padding: 10px;
@@ -52,7 +53,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.form__submit-button {
+.popup__button {
   width: 100%;
   padding: 14px;
   background-color: #000;
@@ -63,22 +64,22 @@
   cursor: pointer;
 }
 
-.form__submit-button:hover {
+.popup__button:hover {
   background-color: #545454;
 }
 
-.button_inactive {
+.popup__button:disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
 
-.form__input-error_active {
+.popup__error_visible {
   color: red;
   font-size: 12px;
   margin-top: 4px;
 }
 
-.form__input_type_error {
+.popup__input_type_error {
   border: 1px solid red;
 }
 
