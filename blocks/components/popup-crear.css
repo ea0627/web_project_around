@@ -77,3 +77,7 @@
   background: url('../../images/close-icon-hover.png') no-repeat center;
   cursor: pointer;
 }
+
+.popup_opened {
+  display: flex !important;
+}

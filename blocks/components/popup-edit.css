@@ -10,6 +10,10 @@
   z-index: 1000;
 }
 
+.popup_opened {
+  display: flex;
+}
+
 .popup__container {
   background-color: #fff;
   border-radius: 10px;
