@@ -45,10 +45,10 @@
         <h2 class="popup__title">Editar perfil</h2>
         <form class="popup__form" name="editProfileForm" novalidate>
           <input id="name-input" type="text" name="name" class="popup__input" placeholder="Nombre" required minlength="2" maxlength="40" />
-          <span class="popup__error name-input-error"></span>
+          <span class="popup__error" id="name-input-error"></span>
 
           <input id="about-input" type="text" name="about" class="popup__input" placeholder="Acerca de mí" required minlength="2" maxlength="200" />
-          <span class="popup__error about-input-error"></span>
+          <span class="popup__error" id="about-input-error"></span>
 
           <button type="submit" class="popup__button">Guardar</button>
         </form>
@@ -66,19 +66,21 @@
       </li>
     </template>
 
-    <div class="popup popup_type_add-card">
-      <div class="popup__container">
-        <button type="button" class="popup__close-button" aria-label="Cerrar"></button>
-        <h2 class="popup__title">Nuevo lugar</h2>
-        <form name="addCardForm" class="popup__form" novalidate>
-          <input id="title-input" type="text" name="title" placeholder="Título" class="popup__input" required minlength="2" maxlength="30"/>
-          <span class="popup__error title-input-error"></span>
-          <input id="link-input" type="url" name="link" placeholder="Enlace a la imagen" class="popup__input" required/>
-          <span class="popup__error link-input-error"></span>
-          <button type="submit" class="popup__button" disabled>Crear</button>
-        </form>
+      <div class="popup popup_type_add-card">
+        <div class="popup__container">
+          <button type="button" class="popup__close-button" aria-label="Cerrar"></button>
+          <h2 class="popup__title">Nuevo lugar</h2>
+          <form name="addCardForm" class="popup__form" novalidate>
+            <input id="title-input" type="text" name="title" placeholder="Título" class="popup__input" required minlength="2" maxlength="30"/>
+            <span class="popup__error" id="title-input-error"></span>
+
+            <input id="link-input" type="url" name="link" placeholder="Enlace a la imagen" class="popup__input" required/>
+            <span class="popup__error" id="link-input-error"></span>
+
+            <button type="submit" class="popup__button" disabled>Crear</button>
+          </form>
+        </div>
       </div>
-    </div>
 
     <div class="popup popup_type_image">
       <div class="popup__image-container">

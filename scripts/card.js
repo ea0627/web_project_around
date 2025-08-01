@@ -1,8 +1,9 @@
 export default class Card {
-  constructor({ name, link }, templateSelector) {
+  constructor({ name, link }, templateSelector, handleCardClick) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   generateCard() {
@@ -23,32 +24,24 @@ export default class Card {
   }
 
   _getTemplate() {
-    const cardTemplate = document
+    return document
       .querySelector(this._templateSelector)
       .content
       .querySelector('.element')
       .cloneNode(true);
-
-    return cardTemplate;
   }
 
   _setEventListeners() {
-    this._likeButton.addEventListener('click', () => this._handleLikeClick());
-    this._deleteButton.addEventListener('click', () => this._handleDeleteClick());
-    this._cardImage.addEventListener('click', () => this._handleImageClick());
-  }
+    this._likeButton.addEventListener('click', () => {
+      this._likeButton.classList.toggle('element__like-button_active');
+    });
 
-  _handleLikeClick() {
-    this._likeButton.classList.toggle('element__like-button_active');
-  }
+    this._deleteButton.addEventListener('click', () => {
+      this._element.remove();
+    });
 
-  _handleDeleteClick() {
-    this._element.remove();
-    this._element = null;
-  }
-
-  _handleImageClick() {
-    // Aquí puedes conectar con el popup grande si estás usando PopupWithImage
-    console.log(`Click en imagen: ${this._name}`);
+    this._cardImage.addEventListener('click', () => {
+      this._handleCardClick(this._name, this._link);
+    });
   }
 }

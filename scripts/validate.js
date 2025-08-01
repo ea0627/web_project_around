@@ -1,13 +1,8 @@
-console.log("✅ validate.js cargado");
-
 export function enableValidation(config) {
     const formList = Array.from(document.querySelectorAll(config.formSelector));
     formList.forEach((formElement) => {
-    console.log("🧪 Revisando formulario:", formElement);
     const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
     const buttonElement = formElement.querySelector(config.submitButtonSelector);
-
-    console.log("👉 Botón encontrado:", buttonElement);
 
     toggleButtonState(inputList, buttonElement);
 
@@ -25,7 +20,7 @@ export function enableValidation(config) {
 }
 
 function checkInputValidity(formElement, inputElement, config) {
-    console.log(`Validando ${inputElement.name}:`, inputElement.validity);
+    
     if (!inputElement.validity.valid) {
         showInputError(formElement, inputElement, inputElement.validationMessage, config);
     } else {
@@ -52,7 +47,7 @@ function hasInvalidInput(inputList) {
 }
 
 export function toggleButtonState(inputList, buttonElement) {
-    console.log("¿Hay input inválido?", hasInvalidInput(inputList));
+    
     if (hasInvalidInput(inputList)) {
         buttonElement.disabled = true;
     } else {
