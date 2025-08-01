@@ -1,6 +1,14 @@
 // web_project_around/scripts/index.js
 import { enableValidation, toggleButtonState } from './validate.js';
 
+// src/scripts/index.js
+import { initialCards } from './constants.js';
+import Card from './card.js';
+
+const cardsContainer = document.querySelector('.elements__list'); // Asegúrate de que existe
+
+
+
 
 // =======================
 // VARIABLES DEL POPUP
@@ -54,8 +62,6 @@ function handleFormSubmit(evt) {
 // FUNCIONES DE TARJETAS
 // =======================
 
-import { initialCards } from './constants.js';
-
 
 // Función para crear cada tarjeta
 function createCard(name, link) {
@@ -90,11 +96,12 @@ function createCard(name, link) {
 }
 
 // Contenedor de tarjetas
-const cardsContainer = document.querySelector('.elements__list');
+//const cardsContainer = document.querySelector('.elements__list');
 
 // Renderizar tarjetas iniciales
-initialCards.forEach((card) => {
-  const cardElement = createCard(card.name, card.link);
+initialCards.forEach((cardData) => {
+  const card = new Card(cardData, '#card-template');
+  const cardElement = card.generateCard();
   cardsContainer.append(cardElement);
 });
 
