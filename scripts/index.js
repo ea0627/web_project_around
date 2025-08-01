@@ -5,8 +5,17 @@ import { enableValidation, toggleButtonState } from './validate.js';
 import { initialCards } from './constants.js';
 import Card from './card.js';
 
-const cardsContainer = document.querySelector('.elements__list'); // Asegúrate de que existe
+import FormValidator from './formvalidator.js';
+import { validationConfig } from './constants.js';
 
+const cardsContainer = document.querySelector('.elements__list');
+
+const formList = Array.from(document.querySelectorAll('.popup__form'));
+
+formList.forEach((formElement) => {
+  const formValidator = new FormValidator(validationConfig, formElement);
+  formValidator.enableValidation();
+});
 
 
 
