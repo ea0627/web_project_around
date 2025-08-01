@@ -1,6 +1,6 @@
-# 📸 Proyecto Sprint 9: Alrededor de los EE.UU.
+# 📸 Proyecto Sprint 10: Alrededor de los EE.UU.
 
-Este proyecto representa una galería interactiva de fotografías con diseño responsivo, iniciada en el Sprint 7 del bootcamp de desarrollo web de **TripleTen**. Ha evolucionado hasta el Sprint 9, incorporando validaciones en formularios, modularización del código, y una mejor experiencia de usuario.
+Este proyecto representa una galería interactiva de fotografías con diseño responsivo, iniciada en el Sprint 7 del bootcamp de desarrollo web de TripleTen. En el Sprint 10 se refactorizó completamente el código JavaScript para seguir principios de programación orientada a objetos (POO) y modularización, mejorando la organización y mantenibilidad del proyecto.
 
 ---
 
@@ -12,26 +12,33 @@ Este proyecto representa una galería interactiva de fotografías con diseño re
 
 ## ⚙️ Funcionalidades implementadas
 
-- ✏️ Editar el perfil del usuario con validación de campos (nombre y ocupación).
-- ➕ Agregar nuevas tarjetas mediante formulario validado (título + URL).
-- ✅ Validación en tiempo real con mensajes nativos del navegador.
-- 🔒 Botón de envío desactivado hasta que los campos sean válidos.
-- 🖼️ Vista ampliada de imágenes al hacer clic.
-- 🗑️ Eliminar tarjetas de la galería.
-- ❤️ Marcar tarjetas como favoritas ("me gusta").
-- ❌ Cierre de ventanas emergentes (popups) con tecla `Esc` y clic en el fondo.
-- 🧼 Reset automático de validación al abrir formularios.
-- 🧩 Modularización del JS: `validate.js`, `constants.js`, `index.js`
+✏️ Editar perfil del usuario con validación de campos (nombre y ocupación).
+➕ Agregar nuevas tarjetas (título + URL), con validación y reinicio del formulario.
+✅ Validación en tiempo real usando clases reutilizables (FormValidator.js).
+🔒 Botón de envío desactivado hasta que los campos sean válidos.
+🖼️ Vista ampliada de imágenes al hacer clic.
+🗑️ Eliminar tarjetas individuales.
+❤️ Marcar tarjetas como favoritas ("me gusta").
+❌ Cerrar ventanas emergentes (popups) con tecla Esc, clic en el fondo o en el ícono de cerrar.
+♻️ Reset automático de errores y botones al abrir cada formulario.
+🧩 Modularización del JS:
+    card.js: clase para creación y comportamiento de tarjetas.
+    FormValidator.js: clase para validación de formularios.
+    utils.js: funciones para manejo general de popups.
+    constants.js: datos y configuración reutilizable.
+    index.js: lógica principal.
 
 ---
 
 ## 🛠️ Tecnologías usadas
 
 - HTML5 + CSS3
-- JavaScript (ES6)
+- JavaScript (ES6+)
 - Responsive Design con Media Queries
 - BEM (Block Element Modifier)
 - Git + GitHub Pages
+- Programación orientada a objetos (POO)
+- Módulos ES (import / export)
 
 ---
 
@@ -43,9 +50,11 @@ web_project_around/
 ├── images/             # Recursos gráficos
 ├── pages/              # CSS principal
 ├── scripts/
-│   └── index.js        # Lógica principal del sitio
-│   ├── validate.js     # Módulo de validación de formularios
-│   └── constants.js    # Tarjetas iniciales exportadas como constante
+│   ├── card.js         # Clase Card
+│   ├── formvalidator.js# Clase FormValidator
+│   ├── utils.js        # Funciones de ayuda
+│   ├── constants.js    # Datos reutilizables
+│   └── index.js        # Lógica principal
 ├── index.html          # Archivo HTML principal
 └── README.md
 ```
@@ -62,7 +71,7 @@ web_project_around/
 
 **Eduardo Amaya**  
 Desarrollador Web Junior  
-Bootcamp TripleTen – Sprint 7  
+Bootcamp TripleTen – Sprint 10  
 
 📬 eduardo.amaya627@gmail.com  
 🔗 [GitHub @ea0627](https://github.com/ea0627)
