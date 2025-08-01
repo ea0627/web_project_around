@@ -13,15 +13,25 @@ Este proyecto representa una galería interactiva de fotografías con diseño re
 ## ⚙️ Funcionalidades implementadas
 
 ✏️ Editar perfil del usuario con validación de campos (nombre y ocupación).
+
 ➕ Agregar nuevas tarjetas (título + URL), con validación y reinicio del formulario.
+
 ✅ Validación en tiempo real usando clases reutilizables (FormValidator.js).
+
 🔒 Botón de envío desactivado hasta que los campos sean válidos.
+
 🖼️ Vista ampliada de imágenes al hacer clic.
+
 🗑️ Eliminar tarjetas individuales.
+
 ❤️ Marcar tarjetas como favoritas ("me gusta").
+
 ❌ Cerrar ventanas emergentes (popups) con tecla Esc, clic en el fondo o en el ícono de cerrar.
+
 ♻️ Reset automático de errores y botones al abrir cada formulario.
+
 🧩 Modularización del JS:
+
     card.js: clase para creación y comportamiento de tarjetas.
     FormValidator.js: clase para validación de formularios.
     utils.js: funciones para manejo general de popups.
