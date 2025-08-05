@@ -1,8 +1,8 @@
 // Importaciones
-import Card from './card.js';
-import FormValidator from './formvalidator.js';
-import { initialCards, validationConfig } from './constants.js';
-import { openPopup, closePopup } from './utils.js';
+import Card from './Card.js';
+import FormValidator from './FormValidator.js';
+import { initialCards, validationConfig } from './Constants.js';
+import { openPopup, closePopup, setPopupOverlayClose } from './Utils.js';
 
 // ========================
 // VALIDACIÓN DE FORMULARIOS
