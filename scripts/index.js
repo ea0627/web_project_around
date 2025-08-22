@@ -3,6 +3,7 @@ import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards, validationConfig } from './Constants.js';
 import { openPopup, closePopup, setPopupOverlayClose } from './Utils.js';
+import Section from './Section.js'; // 👈 NUEVO
 
 // ========================
 // VALIDACIÓN DE FORMULARIOS
@@ -50,7 +51,6 @@ const linkInput = formAddCard.elements.link;
 // Contenedor de tarjetas
 const cardsContainer = document.querySelector('.elements__list');
 
-
 // ========================
 // FUNCIONES
 // ========================
@@ -73,7 +73,6 @@ function handleEditFormSubmit(evt) {
 
 // Abrir popup de nueva tarjeta
 function handleAddCardPopupOpen() {
-  
   formAddCard.reset();
   formValidatorAdd.resetValidation();
   openPopup(popupAddCard);
@@ -82,19 +81,39 @@ function handleAddCardPopupOpen() {
 // Enviar formulario de nueva tarjeta
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
-  const card = new Card({ name: titleInput.value, link: linkInput.value }, '#card-template', handleImageClick);
+  const card = new Card(
+    { name: titleInput.value, link: linkInput.value },
+    '#card-template',
+    handleImageClick
+  );
   const cardElement = card.generateCard();
   cardsContainer.prepend(cardElement);
   closePopup(popupAddCard);
 }
 
-// Mostrar imagen ampliada
+// Mostrar imagen ampliada (tu Card llama con (name, link))
 function handleImageClick(name, link) {
   popupImgElement.src = link;
   popupImgElement.alt = name;
   popupCaption.textContent = name;
   openPopup(popupImage);
 }
+
+// ========================
+// SECTION: instanciación y render
+// ========================
+
+const cardsSection = new Section(
+  {
+    items: initialCards,
+    renderer: (data) => {
+      const card = new Card(data, '#card-template', handleImageClick);
+      const cardElement = card.generateCard();
+      cardsSection.addItem(cardElement);
+    },
+  },
+  '.elements__list'
+);
 
 // ========================
 // EVENTOS
@@ -128,14 +147,12 @@ document.querySelectorAll('.popup').forEach((popup) => {
 });
 
 // ========================
-// RENDER INICIAL DE TARJETAS
+// RENDER INICIAL
 // ========================
 
-initialCards.forEach((data) => {
-  const card = new Card(data, '#card-template', handleImageClick);
-  const cardElement = card.generateCard();
-  cardsContainer.append(cardElement);
-});
+cardsSection.renderItems(); // 👈 reemplaza el forEach anterior
+console.log('Section container:', document.querySelector('.elements__list'));
+console.log('initialCards length:', initialCards?.length);
 
 setPopupOverlayClose(popupEditProfile);
 setPopupOverlayClose(popupAddCard);
