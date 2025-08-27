@@ -2,8 +2,9 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards, validationConfig } from './Constants.js';
-import { openPopup, closePopup, setPopupOverlayClose } from './Utils.js';
-import Section from './Section.js'; // 👈 NUEVO
+import Section from './components/Section.js';
+import PopupWithImage from './components/PopupWithImage.js';
+import PopupWithForm from './components/PopupWithForm.js';
 
 // ========================
 // VALIDACIÓN DE FORMULARIOS
@@ -22,21 +23,9 @@ formValidatorAdd.enableValidation();
 // VARIABLES DEL DOM
 // ========================
 
-// Popup Editar Perfil
-const popupEditProfile = document.querySelector('.popup_type_edit-profile');
+// Botones de acción
 const openEditButton = document.querySelector('.profile__edit-button');
-const closeEditButton = popupEditProfile.querySelector('.popup__close-button');
-
-// Popup Agregar Tarjeta
-const popupAddCard = document.querySelector('.popup_type_add-card');
 const openAddButton = document.querySelector('.profile__add-button');
-const closeAddButton = popupAddCard.querySelector('.popup__close-button');
-
-// Popup Imagen Ampliada
-const popupImage = document.querySelector('.popup_type_image');
-const popupImgElement = popupImage.querySelector('.popup__image');
-const popupCaption = popupImage.querySelector('.popup__caption');
-const closeImageButton = popupImage.querySelector('.popup__close-button');
 
 // Inputs y elementos de perfil
 const nameInput = formEditProfile.elements.name;
@@ -44,59 +33,59 @@ const aboutInput = formEditProfile.elements.about;
 const profileName = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
-// Inputs de nueva tarjeta
-const titleInput = formAddCard.elements.title;
-const linkInput = formAddCard.elements.link;
+// ========================
+// POPUPS (instancias)
+// ========================
 
-// Contenedor de tarjetas
-const cardsContainer = document.querySelector('.elements__list');
+// Popup de imagen (hereda de Popup)
+const imagePopup = new PopupWithImage('.popup_type_image');
+imagePopup.setEventListeners();
+
+// Popups con formulario (heredan de Popup)
+const editProfilePopup = new PopupWithForm(
+  '.popup_type_edit-profile',
+  ({ name, about }) => {
+    profileName.textContent = name;
+    profileDescription.textContent = about;
+    editProfilePopup.close();
+  }
+);
+editProfilePopup.setEventListeners();
+
+const addCardPopup = new PopupWithForm(
+  '.popup_type_add-card',
+  ({ title, link }) => {
+    const card = new Card({ name: title, link }, '#card-template', handleImageClick);
+    const cardElement = card.generateCard();
+    // añadimos al inicio para ver la nueva tarjeta arriba
+    cardsSection.addItem(cardElement);
+    addCardPopup.close();
+  }
+);
+addCardPopup.setEventListeners();
 
 // ========================
 // FUNCIONES
 // ========================
 
-// Abrir popup de edición de perfil
+// Abrir popup de edición de perfil (prefill + validación)
 function handleEditPopupOpen() {
   nameInput.value = profileName.textContent;
   aboutInput.value = profileDescription.textContent;
   formValidatorEdit.resetValidation();
-  openPopup(popupEditProfile);
+  editProfilePopup.open();
 }
 
-// Enviar formulario de edición de perfil
-function handleEditFormSubmit(evt) {
-  evt.preventDefault();
-  profileName.textContent = nameInput.value;
-  profileDescription.textContent = aboutInput.value;
-  closePopup(popupEditProfile);
-}
-
-// Abrir popup de nueva tarjeta
+// Abrir popup de nueva tarjeta (reset + validación)
 function handleAddCardPopupOpen() {
   formAddCard.reset();
   formValidatorAdd.resetValidation();
-  openPopup(popupAddCard);
+  addCardPopup.open();
 }
 
-// Enviar formulario de nueva tarjeta
-function handleAddCardSubmit(evt) {
-  evt.preventDefault();
-  const card = new Card(
-    { name: titleInput.value, link: linkInput.value },
-    '#card-template',
-    handleImageClick
-  );
-  const cardElement = card.generateCard();
-  cardsContainer.prepend(cardElement);
-  closePopup(popupAddCard);
-}
-
-// Mostrar imagen ampliada (tu Card llama con (name, link))
+// Mostrar imagen ampliada desde Card
 function handleImageClick(name, link) {
-  popupImgElement.src = link;
-  popupImgElement.alt = name;
-  popupCaption.textContent = name;
-  openPopup(popupImage);
+  imagePopup.open({ name, link });
 }
 
 // ========================
@@ -119,41 +108,11 @@ const cardsSection = new Section(
 // EVENTOS
 // ========================
 
-// Editar perfil
 openEditButton.addEventListener('click', handleEditPopupOpen);
-closeEditButton.addEventListener('click', () => closePopup(popupEditProfile));
-formEditProfile.addEventListener('submit', handleEditFormSubmit);
-
-// Agregar tarjeta
 openAddButton.addEventListener('click', handleAddCardPopupOpen);
-closeAddButton.addEventListener('click', () => closePopup(popupAddCard));
-formAddCard.addEventListener('submit', handleAddCardSubmit);
-
-// Imagen ampliada
-closeImageButton.addEventListener('click', () => closePopup(popupImage));
-
-// Cierre de popups al presionar Escape
-document.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    document.querySelectorAll('.popup_opened').forEach(closePopup);
-  }
-});
-
-// Cierre al hacer clic fuera del contenedor
-document.querySelectorAll('.popup').forEach((popup) => {
-  popup.addEventListener('click', (evt) => {
-    if (evt.target === popup) closePopup(popup);
-  });
-});
 
 // ========================
 // RENDER INICIAL
 // ========================
 
-cardsSection.renderItems(); // 👈 reemplaza el forEach anterior
-console.log('Section container:', document.querySelector('.elements__list'));
-console.log('initialCards length:', initialCards?.length);
-
-setPopupOverlayClose(popupEditProfile);
-setPopupOverlayClose(popupAddCard);
-setPopupOverlayClose(popupImage);
+cardsSection.renderItems();
