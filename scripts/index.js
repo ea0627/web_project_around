@@ -5,6 +5,7 @@ import { initialCards, validationConfig } from './Constants.js';
 import Section from './components/Section.js';
 import PopupWithImage from './components/PopupWithImage.js';
 import PopupWithForm from './components/PopupWithForm.js';
+import UserInfo from './components/UserInfo.js';
 
 // ========================
 // VALIDACIÓN DE FORMULARIOS
@@ -27,26 +28,33 @@ formValidatorAdd.enableValidation();
 const openEditButton = document.querySelector('.profile__edit-button');
 const openAddButton = document.querySelector('.profile__add-button');
 
-// Inputs y elementos de perfil
+// Inputs del popup de perfil
 const nameInput = formEditProfile.elements.name;
 const aboutInput = formEditProfile.elements.about;
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__description');
+
+// ========================
+// MODELO DE USUARIO
+// ========================
+
+const userInfo = new UserInfo({
+  nameSelector: '.profile__name',
+  jobSelector: '.profile__description',
+});
 
 // ========================
 // POPUPS (instancias)
 // ========================
 
-// Popup de imagen (hereda de Popup)
+// Popup de imagen
 const imagePopup = new PopupWithImage('.popup_type_image');
 imagePopup.setEventListeners();
 
-// Popups con formulario (heredan de Popup)
+// Popups con formulario
 const editProfilePopup = new PopupWithForm(
   '.popup_type_edit-profile',
-  ({ name, about }) => {
-    profileName.textContent = name;
-    profileDescription.textContent = about;
+  (formValues) => {
+    // formValues = { name, about }
+    userInfo.setUserInfo(formValues);
     editProfilePopup.close();
   }
 );
@@ -57,7 +65,7 @@ const addCardPopup = new PopupWithForm(
   ({ title, link }) => {
     const card = new Card({ name: title, link }, '#card-template', handleImageClick);
     const cardElement = card.generateCard();
-    // añadimos al inicio para ver la nueva tarjeta arriba
+    // Añadimos arriba
     cardsSection.addItem(cardElement);
     addCardPopup.close();
   }
@@ -70,8 +78,9 @@ addCardPopup.setEventListeners();
 
 // Abrir popup de edición de perfil (prefill + validación)
 function handleEditPopupOpen() {
-  nameInput.value = profileName.textContent;
-  aboutInput.value = profileDescription.textContent;
+  const { name, about } = userInfo.getUserInfo();
+  nameInput.value = name;
+  aboutInput.value = about;
   formValidatorEdit.resetValidation();
   editProfilePopup.open();
 }
