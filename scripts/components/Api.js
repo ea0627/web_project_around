@@ -1,23 +1,33 @@
-// Api.js
+// src/scripts/components/Api.js
 export default class Api {
     constructor({ baseUrl, headers }) {
-        this._baseUrl = baseUrl.replace(/\/$/, ""); // evita barra final doble
-        this._headers = headers;
+        this._baseUrl = baseUrl.replace(/\/$/, "");
+        this._headers = headers; // <- aquí vive tu { authorization: TOKEN }
     }
 
-  // método interno para factorizar todas las solicitudes
+  // 🔧 IMPORTANTE: fusionar headers al final para no perder authorization
     _request(path, options = {}) {
-        return fetch(`${this._baseUrl}${path}`, {
-            headers: { ...this._headers, ...(options.headers || {}) },
+        const url = `${this._baseUrl}${path}`;
+
+        // headers de la llamada (ej. { "Content-Type": "application/json" })
+        const perCallHeaders = options.headers || {};
+
+        return fetch(url, {
             ...options,
+            // los globales (this._headers) al final → pisan nada y NO se pierden
+            headers: { ...perCallHeaders, ...this._headers },
         }).then(this._checkResponse);
     }
 
     _checkResponse(res) {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
+        if (res.ok) return res.json();
+        return res
+            .json()
+            .catch(() => res.text())
+            .then((data) => {
+                const details = typeof data === "string" ? data : JSON.stringify(data);
+                return Promise.reject(`Error ${res.status}: ${details}`);
+        });
     }
 
   // --- Usuario ---
@@ -55,22 +65,15 @@ export default class Api {
     }
 
     deleteCard(cardId) {
-        return this._request(`/cards/${cardId}`, {
-            method: "DELETE",
-        });
+        return this._request(`/cards/${cardId}`, { method: "DELETE" });
     }
 
   // --- Likes ---
     addLike(cardId) {
-        return this._request(`/cards/${cardId}/likes`, {
-            method: "PUT",
-        });
+        return this._request(`/cards/${cardId}/likes`, { method: "PUT" });
     }
 
     removeLike(cardId) {
-        return this._request(`/cards/${cardId}/likes`, {
-            method: "DELETE",
-        });
+        return this._request(`/cards/${cardId}/likes`, { method: "DELETE" });
     }
 }
-// Api.js
