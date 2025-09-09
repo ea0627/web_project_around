@@ -1,3 +1,38 @@
+import Api from "./components/Api.js";
+
+// ⚠️ Reemplaza por tu token personal (el que obtuviste en /users/create)
+const TOKEN = "010d3b6f-1c0b-4567-a029-4273182b9af1";
+
+const api = new Api({
+  baseUrl: "https://around-api.es.tripleten-services.com/v1",
+  headers: {
+    authorization: TOKEN
+  }
+});
+
+// 🔎 Prueba: obtener info del usuario
+api.getUserInfo()
+  .then((user) => {
+    console.log("✅ Token válido. Datos del usuario:");
+    console.log(user);
+  })
+  .catch((err) => {
+    console.log("❌ Error con el token o la petición:");
+    console.log(err);
+  });
+
+  // 🔎 Prueba: obtener las tarjetas iniciales
+api.getInitialCards()
+  .then((cards) => {
+    console.log("✅ Tarjetas desde el servidor:");
+    console.log(cards);
+  })
+  .catch((err) => {
+    console.log("❌ Error al obtener tarjetas:", err);
+  });
+
+
+
 // Importaciones
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
