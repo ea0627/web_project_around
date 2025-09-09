@@ -113,10 +113,30 @@ editProfilePopup.setEventListeners();
 const addCardPopup = new PopupWithForm(
   '.popup_type_add-card',
   ({ title, link }) => {
-    const card = new Card({ name: title, link }, '#card-template', handleImageClick);
-    const cardElement = card.generateCard();
-    cardsSection.addItem(cardElement);
-    addCardPopup.close();
+    // UX: “Creando…”
+    addCardPopup.setSaving?.(true, "Creando…");
+
+    api.addCard({ name: title, link })
+      .then((newCard) => {
+        // newCard viene del servidor con _id, owner, isLiked, etc.
+        const card = new Card(newCard, '#card-template', handleImageClick);
+        const cardElement = card.generateCard();
+
+        // Inserta la nueva tarjeta (si tienes addItemPrepend úsalo; si no, addItem está bien)
+        // cardsSection.addItemPrepend(cardElement);
+        cardsSection.addItem(cardElement);
+
+        // Cierra y limpia
+        addCardPopup.close();
+        formAddCard.reset();
+        formValidatorAdd.resetValidation();
+      })
+      .catch((err) => {
+        console.log("❌ Error al crear tarjeta:", err);
+      })
+      .finally(() => {
+        addCardPopup.setSaving?.(false); // vuelve a “Crear”
+      });
   }
 );
 addCardPopup.setEventListeners();
