@@ -1,39 +1,17 @@
 import Api from "./components/Api.js";
 
-// ⚠️ Reemplaza por tu token personal (el que obtuviste en /users/create)
+// ⚠️ Token
 const TOKEN = "010d3b6f-1c0b-4567-a029-4273182b9af1";
 
 const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
-  headers: {
-    authorization: TOKEN
-  }
+  headers: { authorization: TOKEN }
 });
 
-// 🔎 Prueba: obtener info del usuario
-api.getUserInfo()
-  .then((user) => {
-    console.log("✅ Token válido. Datos del usuario:");
-    console.log(user);
-  })
-  .catch((err) => {
-    console.log("❌ Error con el token o la petición:");
-    console.log(err);
-  });
+// ⬇️ NUEVO: guardaremos el id del usuario para pasos posteriores (likes/delete)
+let currentUserId = null;
 
-  // 🔎 Prueba: obtener las tarjetas iniciales
-api.getInitialCards()
-  .then((cards) => {
-    console.log("✅ Tarjetas desde el servidor:");
-    console.log(cards);
-  })
-  .catch((err) => {
-    console.log("❌ Error al obtener tarjetas:", err);
-  });
-
-
-
-// Importaciones
+// ======= (el resto de imports que ya tienes) =======
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import { initialCards, validationConfig } from './Constants.js';
@@ -59,7 +37,6 @@ formValidatorAdd.enableValidation();
 // VARIABLES DEL DOM
 // ========================
 
-// Botones de acción
 const openEditButton = document.querySelector('.profile__edit-button');
 const openAddButton = document.querySelector('.profile__add-button');
 
@@ -71,20 +48,35 @@ const aboutInput = formEditProfile.elements.about;
 // MODELO DE USUARIO
 // ========================
 
+// ⬇️ Si tienes la imagen en el DOM, pásala como avatarSelector (opcional).
+//    Si tu img tiene otra clase, cámbiala aquí.
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   jobSelector: '.profile__description',
+  avatarSelector: '.profile__image'   // <-- si existe, se usará; si no, no pasa nada
 });
+
+// ⬇️ NUEVO: cargar usuario del servidor y pintar header
+api.getUserInfo()
+  .then((user) => {
+    currentUserId = user._id;
+    userInfo.setUserInfo({
+      name: user.name,
+      about: user.about,
+      avatar: user.avatar
+    });
+  })
+  .catch((err) => {
+    console.log("❌ Error al cargar usuario:", err);
+  });
 
 // ========================
 // POPUPS (instancias)
 // ========================
 
-// Popup de imagen
 const imagePopup = new PopupWithImage('.popup_type_image');
 imagePopup.setEventListeners();
 
-// Popups con formulario
 const editProfilePopup = new PopupWithForm(
   '.popup_type_edit-profile',
   (formValues) => {
@@ -100,7 +92,6 @@ const addCardPopup = new PopupWithForm(
   ({ title, link }) => {
     const card = new Card({ name: title, link }, '#card-template', handleImageClick);
     const cardElement = card.generateCard();
-    // Añadimos arriba
     cardsSection.addItem(cardElement);
     addCardPopup.close();
   }
@@ -111,7 +102,6 @@ addCardPopup.setEventListeners();
 // FUNCIONES
 // ========================
 
-// Abrir popup de edición de perfil (prefill + validación)
 function handleEditPopupOpen() {
   const { name, about } = userInfo.getUserInfo();
   nameInput.value = name;
@@ -120,14 +110,12 @@ function handleEditPopupOpen() {
   editProfilePopup.open();
 }
 
-// Abrir popup de nueva tarjeta (reset + validación)
 function handleAddCardPopupOpen() {
   formAddCard.reset();
   formValidatorAdd.resetValidation();
   addCardPopup.open();
 }
 
-// Mostrar imagen ampliada desde Card
 function handleImageClick(name, link) {
   imagePopup.open({ name, link });
 }
@@ -136,6 +124,8 @@ function handleImageClick(name, link) {
 // SECTION: instanciación y render
 // ========================
 
+// ⬇️ Por ahora mantenemos initialCards. En el siguiente punto lo quitamos y
+//    renderizamos las que vienen del servidor.
 const cardsSection = new Section(
   {
     items: initialCards,
