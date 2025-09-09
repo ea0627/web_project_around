@@ -7,20 +7,17 @@ console.log("TOKEN len:", TOKEN.length);
 
 const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
-  headers: { 
-    authorization: TOKEN, 
-    "Content-Type": "application/json",
-    authorization: TOKEN  
-  }
+  headers: { authorization: TOKEN }
 });
 
-// ⬇️ NUEVO: guardaremos el id del usuario para pasos posteriores (likes/delete)
+// Guardaremos el id del usuario (para delete en el punto 7)
 let currentUserId = null;
 
-// ======= (el resto de imports que ya tienes) =======
+// ======= Imports =======
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
-import { initialCards, validationConfig } from './Constants.js';
+// ⛔️ Quitamos initialCards: solo queda validationConfig
+import { validationConfig } from './Constants.js';
 import Section from './components/Section.js';
 import PopupWithImage from './components/PopupWithImage.js';
 import PopupWithForm from './components/PopupWithForm.js';
@@ -54,30 +51,14 @@ const aboutInput = formEditProfile.elements.about;
 // MODELO DE USUARIO
 // ========================
 
-// ⬇️ Si tienes la imagen en el DOM, pásala como avatarSelector (opcional).
-//    Si tu img tiene otra clase, cámbiala aquí.
 const userInfo = new UserInfo({
   nameSelector: '.profile__name',
   jobSelector: '.profile__description',
-  avatarSelector: '.profile__image'   // <-- si existe, se usará; si no, no pasa nada
+  avatarSelector: '.profile__image'
 });
 
-// ⬇️ NUEVO: cargar usuario del servidor y pintar header
-api.getUserInfo()
-  .then((user) => {
-    currentUserId = user._id;
-    userInfo.setUserInfo({
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar
-    });
-  })
-  .catch((err) => {
-    console.log("❌ Error al cargar usuario:", err);
-  });
-
 // ========================
-// POPUPS (instancias)
+// POPUPS
 // ========================
 
 const imagePopup = new PopupWithImage('.popup_type_image');
@@ -85,27 +66,15 @@ imagePopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm(
   '.popup_type_edit-profile',
-  (formValues, submitBtn) => {
-    // formValues = { name, about }
-    // UX: estado "Guardando…"
-    if (editProfilePopup.setSaving) editProfilePopup.setSaving(true);
-
+  (formValues) => {
+    editProfilePopup.setSaving?.(true);
     api.updateUserInfo({ name: formValues.name, about: formValues.about })
       .then((upd) => {
-        // Actualiza el header con lo que devuelve el servidor
-        userInfo.setUserInfo({
-          name: upd.name,
-          about: upd.about,
-          avatar: upd.avatar
-        });
+        userInfo.setUserInfo({ name: upd.name, about: upd.about, avatar: upd.avatar });
         editProfilePopup.close();
       })
-      .catch((err) => {
-        console.log("❌ Error al actualizar perfil:", err);
-      })
-      .finally(() => {
-        if (editProfilePopup.setSaving) editProfilePopup.setSaving(false);
-      });
+      .catch((err) => console.log("❌ Error al actualizar perfil:", err))
+      .finally(() => editProfilePopup.setSaving?.(false));
   }
 );
 editProfilePopup.setEventListeners();
@@ -113,30 +82,21 @@ editProfilePopup.setEventListeners();
 const addCardPopup = new PopupWithForm(
   '.popup_type_add-card',
   ({ title, link }) => {
-    // UX: “Creando…”
     addCardPopup.setSaving?.(true, "Creando…");
-
     api.addCard({ name: title, link })
       .then((newCard) => {
-        // newCard viene del servidor con _id, owner, isLiked, etc.
-        const card = new Card(newCard, '#card-template', handleImageClick);
+        const card = new Card(newCard, '#card-template', handleImageClick, handleLikeClick);
         const cardElement = card.generateCard();
-
-        // Inserta la nueva tarjeta (si tienes addItemPrepend úsalo; si no, addItem está bien)
-        // cardsSection.addItemPrepend(cardElement);
-        cardsSection.addItem(cardElement);
-
-        // Cierra y limpia
+        // Aparece arriba
+        cardsSection.addItemPrepend
+          ? cardsSection.addItemPrepend(cardElement)
+          : cardsSection.addItem(cardElement);
         addCardPopup.close();
         formAddCard.reset();
         formValidatorAdd.resetValidation();
       })
-      .catch((err) => {
-        console.log("❌ Error al crear tarjeta:", err);
-      })
-      .finally(() => {
-        addCardPopup.setSaving?.(false); // vuelve a “Crear”
-      });
+      .catch((err) => console.log("❌ Error al crear tarjeta:", err))
+      .finally(() => addCardPopup.setSaving?.(false));
   }
 );
 addCardPopup.setEventListeners();
@@ -163,17 +123,27 @@ function handleImageClick(name, link) {
   imagePopup.open({ name, link });
 }
 
+// Likes a través de API
+function handleLikeClick(cardId, isLiked, updateLikeUI, onError) {
+  const req = isLiked ? api.removeLike(cardId) : api.addLike(cardId);
+  req
+    .then((updatedCard) => {
+      updateLikeUI(!!updatedCard.isLiked);
+    })
+    .catch((err) => {
+      console.log("❌ Error al alternar like:", err);
+      onError?.();
+    });
+}
+
 // ========================
-// SECTION: instanciación y render
+// SECTION: instanciación (sin items locales)
 // ========================
 
-// ⬇️ Por ahora mantenemos initialCards. En el siguiente punto lo quitamos y
-//    renderizamos las que vienen del servidor.
 const cardsSection = new Section(
   {
-    items: initialCards,
     renderer: (data) => {
-      const card = new Card(data, '#card-template', handleImageClick);
+      const card = new Card(data, '#card-template', handleImageClick, handleLikeClick);
       const cardElement = card.generateCard();
       cardsSection.addItem(cardElement);
     },
@@ -189,7 +159,19 @@ openEditButton.addEventListener('click', handleEditPopupOpen);
 openAddButton.addEventListener('click', handleAddCardPopupOpen);
 
 // ========================
-// RENDER INICIAL
+// CARGA INICIAL: usuario + tarjetas del servidor
 // ========================
 
-cardsSection.renderItems();
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([user, cards]) => {
+    currentUserId = user._id;
+    userInfo.setUserInfo({ name: user.name, about: user.about, avatar: user.avatar });
+    // Renderiza tarjetas del backend (cada una ya trae isLiked)
+    // Si tu Section tiene renderItems(items), puedes usarlo; sino, forEach:
+    cards.forEach((cardData) => {
+      const card = new Card(cardData, '#card-template', handleImageClick, handleLikeClick);
+      const cardElement = card.generateCard();
+      cardsSection.addItem(cardElement);
+    });
+  })
+  .catch((err) => console.log("❌ Error al cargar inicial:", err));
