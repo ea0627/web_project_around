@@ -1,11 +1,17 @@
 import Api from "./components/Api.js";
 
 // ⚠️ Token
-const TOKEN = "010d3b6f-1c0b-4567-a029-4273182b9af1";
+const TOKEN = "2bd7dcf7-127d-448b-a5cb-70f8f3d9d2ea".trim();
+console.log(TOKEN);
+console.log("TOKEN len:", TOKEN.length);
 
 const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
-  headers: { authorization: TOKEN }
+  headers: { 
+    authorization: TOKEN, 
+    "Content-Type": "application/json",
+    authorization: TOKEN  
+  }
 });
 
 // ⬇️ NUEVO: guardaremos el id del usuario para pasos posteriores (likes/delete)
@@ -79,10 +85,27 @@ imagePopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm(
   '.popup_type_edit-profile',
-  (formValues) => {
+  (formValues, submitBtn) => {
     // formValues = { name, about }
-    userInfo.setUserInfo(formValues);
-    editProfilePopup.close();
+    // UX: estado "Guardando…"
+    if (editProfilePopup.setSaving) editProfilePopup.setSaving(true);
+
+    api.updateUserInfo({ name: formValues.name, about: formValues.about })
+      .then((upd) => {
+        // Actualiza el header con lo que devuelve el servidor
+        userInfo.setUserInfo({
+          name: upd.name,
+          about: upd.about,
+          avatar: upd.avatar
+        });
+        editProfilePopup.close();
+      })
+      .catch((err) => {
+        console.log("❌ Error al actualizar perfil:", err);
+      })
+      .finally(() => {
+        if (editProfilePopup.setSaving) editProfilePopup.setSaving(false);
+      });
   }
 );
 editProfilePopup.setEventListeners();
