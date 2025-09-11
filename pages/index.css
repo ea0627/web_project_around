@@ -26,3 +26,32 @@ html, body {
 .element__trash-button_hidden {
   display: none;
 }
+
+.profile__avatar-wrapper {
+  position: relative;
+  width: 168px;     /* ajusta a tu tamaño */
+  height: 168px;    /* ajusta a tu tamaño */
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile__avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile__avatar-edit-button {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(0,0,0,.55) url('../images/icon-edit.png') center/28px 28px no-repeat;
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+
+.profile__avatar-wrapper:hover .profile__avatar-edit-button {
+  opacity: 1;
+}

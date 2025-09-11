@@ -19,7 +19,12 @@
             />
     </header>
     <section class="profile">
-      <img src="./images/profile.png" alt="Jacques Cousteau" class="profile__avatar">
+      
+      <div class="profile__avatar-wrapper">
+        <img src="./images/profile.png" alt="Jacques Cousteau" class="profile__avatar">
+        <button class="profile__avatar-edit-button" type="button" aria-label="Editar foto"></button>
+      </div>
+      
       <div class="profile__header">
         <div class="profile__info">
           <h1 class="profile__name">Jacques Cousteau</h1>
@@ -101,6 +106,28 @@
         </form>
       </div>
     </div>
+
+    <!-- Popup: actualizar avatar -->
+    <div class="popup popup_type_update-avatar">
+      <div class="popup__container">
+        <button class="popup__close-button" type="button" aria-label="Cerrar"></button>
+        <h3 class="popup__title">Cambiar foto de perfil</h3>
+        <form class="popup__form" name="updateAvatarForm" novalidate>
+          <input
+            class="popup__input"
+            type="url"
+            name="avatar"
+            placeholder="https://…/imagen.jpg"
+            id="avatar"
+            required
+          />
+          <span class="popup__input-error" id="avatar-error"></span>
+          <button class="popup__button" type="submit">Guardar</button>
+        </form>
+      </div>
+    </div>
+
+
 
 
     <script type="module" src="./scripts/index.js"></script>
