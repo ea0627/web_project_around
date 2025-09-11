@@ -81,7 +81,8 @@ const addCardPopup = new PopupWithForm(
           "#card-template",
           handleImageClick,
           handleLikeClick,
-          handleDeleteClick
+          handleDeleteClick,
+          currentUserId   // para saber si soy dueño
         );
         const el = card.generateCard();
         cardsSection.addItemPrepend ? cardsSection.addItemPrepend(el) : cardsSection.addItem(el);
@@ -164,7 +165,8 @@ const cardsSection = new Section(
         "#card-template",
         handleImageClick,
         handleLikeClick,
-        handleDeleteClick
+        handleDeleteClick,
+        currentUserId  // para saber si soy dueño
       );
       const el = card.generateCard();
       cardsSection.addItem(el);
@@ -186,13 +188,26 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([user, cards]) => {
     currentUserId = user._id;
     userInfo.setUserInfo({ name: user.name, about: user.about, avatar: user.avatar });
+
+    // 🔎 DEBUG: ¿de quién es cada card?
+    console.log("currentUserId:", currentUserId);
+    console.table(
+      cards.map(c => ({
+        name: c.name,
+        id: c._id,
+        owner: (c.owner && c.owner._id) ? c.owner._id : c.owner,
+        isMine: ((c.owner && c.owner._id) ? c.owner._id : c.owner) === currentUserId
+      }))
+    );
+
     cards.forEach((cardData) => {
       const card = new Card(
         cardData,
         "#card-template",
         handleImageClick,
         handleLikeClick,
-        handleDeleteClick
+        handleDeleteClick,
+        currentUserId
       );
       const el = card.generateCard();
       cardsSection.addItem(el);

@@ -22,3 +22,7 @@ html, body {
 *::after {
   box-sizing: border-box;
 }
+
+.element__trash-button_hidden {
+  display: none;
+}
