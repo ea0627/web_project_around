@@ -1,36 +1,28 @@
-// src/scripts/components/Api.js
 export default class Api {
     constructor({ baseUrl, headers }) {
         this._baseUrl = baseUrl.replace(/\/$/, "");
-        this._headers = headers; // <- aquí vive tu { authorization: TOKEN }
+        this._headers = headers; // { authorization: TOKEN }
     }
 
-  // 🔧 IMPORTANTE: fusionar headers al final para no perder authorization
     _request(path, options = {}) {
-        const url = `${this._baseUrl}${path}`;
-
-        // headers de la llamada (ej. { "Content-Type": "application/json" })
-        const perCallHeaders = options.headers || {};
-
-        return fetch(url, {
+        return fetch(`${this._baseUrl}${path}`, {
             ...options,
-            // los globales (this._headers) al final → pisan nada y NO se pierden
-            headers: { ...perCallHeaders, ...this._headers },
+            headers: { ...this._headers, ...options.headers },
         }).then(this._checkResponse);
     }
 
     _checkResponse(res) {
         if (res.ok) return res.json();
         return res
-            .json()
-            .catch(() => res.text())
-            .then((data) => {
-                const details = typeof data === "string" ? data : JSON.stringify(data);
-                return Promise.reject(`Error ${res.status}: ${details}`);
+        .json()
+        .catch(() => res.text())
+        .then((data) => {
+            const msg = typeof data === "string" ? data : JSON.stringify(data);
+            return Promise.reject(`Error ${res.status}: ${msg}`);
         });
     }
 
-  // --- Usuario ---
+  // -------- Usuario --------
     getUserInfo() {
         return this._request("/users/me");
     }
@@ -43,15 +35,15 @@ export default class Api {
         });
     }
 
-    updateAvatar(avatarUrl) {
+    updateAvatar(avatar) {
         return this._request("/users/me/avatar", {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ avatar: avatarUrl }),
+            body: JSON.stringify({ avatar }),
         });
     }
 
-  // --- Tarjetas ---
+  // -------- Tarjetas --------
     getInitialCards() {
         return this._request("/cards");
     }
@@ -68,7 +60,7 @@ export default class Api {
         return this._request(`/cards/${cardId}`, { method: "DELETE" });
     }
 
-  // --- Likes ---
+  // -------- Likes --------
     addLike(cardId) {
         return this._request(`/cards/${cardId}/likes`, { method: "PUT" });
     }

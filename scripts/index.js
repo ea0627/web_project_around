@@ -12,32 +12,28 @@ import { validationConfig } from "./Constants.js";
 import UserInfo from "./components/UserInfo.js";
 
 // =======================
-// API / TOKEN
-// =======================
+/* API / TOKEN */
 const TOKEN = "2bd7dcf7-127d-448b-a5cb-70f8f3d9d2ea".trim();
 
 const api = new Api({
   baseUrl: "https://around-api.es.tripleten-services.com/v1",
-  headers: { authorization: TOKEN }
+  headers: { authorization: TOKEN } // ← sin Content-Type global
 });
 
-// Guarda tu id para usos posteriores (propietario, etc.)
-let currentUserId = null;
+let currentUserId = null; // se setea tras getUserInfo()
 
 // =======================
-// USER INFO (modelo de cabecera)
-// =======================
+// USER INFO (cabecera)
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   jobSelector: ".profile__description",
-  avatarSelector: ".profile__avatar"
+  avatarSelector: ".profile__avatar" // tu <img> del avatar
 });
 
 // =======================
-// VALIDACIÓN DE FORMULARIOS
-// =======================
-const formEditProfile = document.forms.editProfileForm;
-const formAddCard    = document.forms.addCardForm;
+// VALIDACIÓN
+const formEditProfile  = document.forms.editProfileForm;
+const formAddCard      = document.forms.addCardForm;
 const formUpdateAvatar = document.forms.updateAvatarForm;
 
 const validatorEdit   = new FormValidator(validationConfig, formEditProfile);
@@ -50,7 +46,6 @@ validatorAvatar.enableValidation();
 
 // =======================
 // POPUPS COMUNES
-// =======================
 const imagePopup = new PopupWithImage(".popup_type_image");
 imagePopup.setEventListeners();
 
@@ -58,8 +53,7 @@ const confirmPopup = new PopupWithConfirmation(".popup_type_confirm");
 confirmPopup.setEventListeners();
 
 // =======================
-// HANDLERS (Card)
-// =======================
+// HANDLERS de Card
 function handleImageClick(name, link) {
   imagePopup.open({ name, link });
 }
@@ -68,7 +62,10 @@ function handleLikeClick(cardId, isLiked, updateLikeUI, onError) {
   const req = isLiked ? api.removeLike(cardId) : api.addLike(cardId);
   req
     .then((updatedCard) => updateLikeUI(!!updatedCard.isLiked))
-    .catch((err) => { console.log("❌ Error al alternar like:", err); onError?.(); });
+    .catch((err) => {
+      console.log("❌ Error al alternar like:", err);
+      onError?.();
+    });
 }
 
 function handleDeleteClick(cardId, removeCardFromDOM) {
@@ -86,8 +83,7 @@ function handleDeleteClick(cardId, removeCardFromDOM) {
 }
 
 // =======================
-// SECTION (listado de tarjetas)
-// =======================
+// SECTION (lista de cards)
 const cardsSection = new Section(
   {
     renderer: (data) => {
@@ -96,7 +92,8 @@ const cardsSection = new Section(
         "#card-template",
         handleImageClick,
         handleLikeClick,
-        handleDeleteClick
+        handleDeleteClick,
+        currentUserId // si tu Card lo usa para ocultar la papelera
       );
       const el = card.generateCard();
       cardsSection.addItem(el);
@@ -107,11 +104,10 @@ const cardsSection = new Section(
 
 // =======================
 // POPUP: Editar perfil
-// =======================
 const editProfilePopup = new PopupWithForm(
   ".popup_type_edit-profile",
   ({ name, about }) => {
-    editProfilePopup.setSaving?.(true);
+    editProfilePopup.setSaving?.(true, "Guardando…");
     api.updateUserInfo({ name, about })
       .then((u) => {
         userInfo.setUserInfo({ name: u.name, about: u.about, avatar: u.avatar });
@@ -123,7 +119,7 @@ const editProfilePopup = new PopupWithForm(
 );
 editProfilePopup.setEventListeners();
 
-// Abrir popup editar perfil
+// abrir editar perfil
 const openEditButton = document.querySelector(".profile__edit-button");
 openEditButton.addEventListener("click", () => {
   const { name, about } = userInfo.getUserInfo();
@@ -135,7 +131,6 @@ openEditButton.addEventListener("click", () => {
 
 // =======================
 // POPUP: Nueva tarjeta
-// =======================
 const addCardPopup = new PopupWithForm(
   ".popup_type_add-card",
   ({ title, link }) => {
@@ -147,10 +142,11 @@ const addCardPopup = new PopupWithForm(
           "#card-template",
           handleImageClick,
           handleLikeClick,
-          handleDeleteClick
+          handleDeleteClick,
+          currentUserId
         );
         const el = card.generateCard();
-        // Si tu Section no tiene addItemPrepend, addItem es suficiente
+        // si tu Section no tiene addItemPrepend, addItem es suficiente
         cardsSection.addItemPrepend ? cardsSection.addItemPrepend(el) : cardsSection.addItem(el);
         addCardPopup.close();
         formAddCard.reset();
@@ -162,7 +158,6 @@ const addCardPopup = new PopupWithForm(
 );
 addCardPopup.setEventListeners();
 
-// Abrir popup nueva tarjeta
 const openAddButton = document.querySelector(".profile__add-button");
 openAddButton.addEventListener("click", () => {
   formAddCard.reset();
@@ -171,8 +166,7 @@ openAddButton.addEventListener("click", () => {
 });
 
 // =======================
-// POPUP: Actualizar avatar (NUEVO)
-// =======================
+// POPUP: Actualizar avatar
 const updateAvatarPopup = new PopupWithForm(
   ".popup_type_update-avatar",
   ({ avatar }) => {
@@ -190,26 +184,7 @@ const updateAvatarPopup = new PopupWithForm(
 );
 updateAvatarPopup.setEventListeners();
 
-// ---- disparador del popup de avatar ----
-const avatarEl = document.querySelector(".profile__avatar");
-console.log("¿Encontré .profile__avatar?", !!avatarEl);
-
-function openUpdateAvatarPopup() {
-  console.log("Abriendo popup de avatar…");
-  formUpdateAvatar.reset();
-  validatorAvatar.resetValidation();
-  updateAvatarPopup.open();
-}
-
-if (avatarEl) {
-  avatarEl.style.cursor = "pointer";     // opcional, para UX
-  avatarEl.addEventListener("click", openUpdateAvatarPopup);
-} else {
-  console.warn("No se encontró .profile__avatar en el DOM");
-}
-
-
-// Abrir popup de avatar: con botón si existe, si no con la imagen
+// abrir popup de avatar (botón o la propia imagen como fallback)
 const openAvatarButton =
   document.querySelector(".profile__avatar-edit-button") ||
   document.querySelector(".profile__avatar");
@@ -222,19 +197,20 @@ openAvatarButton?.addEventListener("click", () => {
 
 // =======================
 // CARGA INICIAL
-// =======================
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([user, cards]) => {
     currentUserId = user._id;
     userInfo.setUserInfo({ name: user.name, about: user.about, avatar: user.avatar });
 
+    // Render cards del servidor
     cards.forEach((cardData) => {
       const card = new Card(
         cardData,
         "#card-template",
         handleImageClick,
         handleLikeClick,
-        handleDeleteClick
+        handleDeleteClick,
+        currentUserId
       );
       const el = card.generateCard();
       cardsSection.addItem(el);
