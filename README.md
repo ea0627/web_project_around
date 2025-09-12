@@ -1,7 +1,7 @@
-# 📸 Proyecto Sprint 11: Alrededor de los EE.UU.
+# 📸 Proyecto Sprint 12: Alrededor de los EE.UU.
 
-Este proyecto representa una galería interactiva de fotografías con diseño responsivo, iniciada en el Sprint 7 del bootcamp de desarrollo web de TripleTen.  
-En el Sprint 11 se refactorizó completamente el código JavaScript para seguir principios de **programación orientada a objetos (POO)** y **modularización**, mejorando la organización, escalabilidad y mantenibilidad del proyecto.
+Este proyecto representa una galería interactiva de fotografías con diseño responsivo, iniciada en el Sprint 7 del bootcamp de desarrollo web de TripleTen.
+En el Sprint 12 se conectó el proyecto a un servidor real mediante API REST, logrando que el sitio cobre vida con datos dinámicos.
 
 ---
 
@@ -13,34 +13,32 @@ En el Sprint 11 se refactorizó completamente el código JavaScript para seguir 
 
 ## ⚙️ Funcionalidades implementadas
 
-✏️ **Editar perfil del usuario** con validación de campos (nombre y ocupación).
+👤 Carga de usuario desde el servidor (GET /users/me).
+✏️ Editar perfil del usuario con persistencia en el servidor (PATCH /users/me).
+🖼️ Actualizar foto de perfil con validación de URL (PATCH /users/me/avatar).
 
-➕ **Agregar nuevas tarjetas** (título + URL), con validación y reinicio del formulario.
+🗂️ Carga inicial de tarjetas desde el servidor (GET /cards).
+➕ Agregar nuevas tarjetas con título + URL, guardadas en el backend (POST /cards).
+❤️ Dar y quitar "me gusta" sincronizado con el servidor (PUT/DELETE /cards/:id/likes).
+🗑️ Eliminar tarjetas propias con confirmación previa (DELETE /cards/:id).
 
-✅ **Validación en tiempo real** usando clases reutilizables (`FormValidator.js`).
-
-🔒 **Botón de envío desactivado** hasta que los campos sean válidos.
-
-🖼️ **Vista ampliada de imágenes** al hacer clic (con `PopupWithImage`).
-
-🗑️ **Eliminar tarjetas individuales**.
-
-❤️ **Marcar tarjetas como favoritas** ("me gusta").
-
-❌ **Cerrar ventanas emergentes (popups)** con tecla Esc, clic en el fondo o en el ícono de cerrar.
-
-♻️ **Reset automático** de errores y botones al abrir cada formulario.
+✅ Validación en tiempo real usando clases reutilizables (FormValidator.js).
+🔒 Botones de envío desactivados hasta que los campos sean válidos.
+♻️ Estados de carga en botones de formularios: "Guardando…", "Creando…", "Eliminando…".
+❌ Cerrar popups con tecla Esc, clic en el fondo o en el botón de cerrar.
 
 🧩 **Arquitectura orientada a objetos y modularización del JS**:
-- `Card.js`: clase para creación y comportamiento de tarjetas (like, delete, abrir imagen).
-- `FormValidator.js`: clase para validación de formularios.
-- `UserInfo.js`: clase para obtener y actualizar la información del perfil.
-- `Section.js`: clase genérica para renderizar listas de elementos.
-- `Popup.js`: clase base para manejar popups.
-- `PopupWithForm.js`: clase hija de `Popup` para formularios (editar perfil y añadir tarjeta).
-- `PopupWithImage.js`: clase hija de `Popup` para mostrar imágenes ampliadas.
-- `Constants.js`: datos iniciales y configuración.
-- `index.js`: instancia y conexión de todas las clases.
+Api.js: centraliza todas las solicitudes al servidor.
+Card.js: creación y comportamiento de tarjetas (like, delete, abrir imagen).
+FormValidator.js: validación de formularios.
+UserInfo.js: gestión de datos del usuario (nombre, ocupación, avatar).
+Section.js: renderizado genérico de listas de elementos.
+Popup.js: clase base para manejar popups.
+PopupWithForm.js: formularios (perfil, tarjeta, avatar).
+PopupWithImage.js: mostrar imágenes ampliadas.
+PopupWithConfirmation.js: popup de confirmación para eliminar.
+Constants.js: configuración de validación y selectores.
+index.js: orquestación de todas las clases.
 
 ---
 
@@ -53,6 +51,7 @@ En el Sprint 11 se refactorizó completamente el código JavaScript para seguir 
 - Git + GitHub Pages
 - Programación orientada a objetos (POO)
 - Módulos ES (import / export)
+- API REST (fetch + headers + JSON)
 
 ---
 
@@ -65,6 +64,7 @@ web_project_around/
 ├── pages/                          # CSS principal
 ├── scripts/
 │ ├── components/                   # Clases modulares
+│ │ ├── Api.js
 │ │ ├── Card.js
 │ │ ├── FormValidator.js
 │ │ ├── UserInfo.js
@@ -84,7 +84,7 @@ web_project_around/
 
 **Eduardo Amaya**  
 Desarrollador Web Junior  
-Bootcamp TripleTen – Sprint 11  
+Bootcamp TripleTen – Sprint 12  
 
 📬 eduardo.amaya627@gmail.com  
 🔗 [GitHub @ea0627](https://github.com/ea0627)
@@ -93,8 +93,11 @@ Bootcamp TripleTen – Sprint 11
 
 ## 📌 Notas adicionales
 
-- El sitio fue desplegado desde la rama `main` usando GitHub Pages.
-- Todas las rutas fueron ajustadas para funcionar correctamente en producción.
+El sitio fue desplegado desde la rama main usando GitHub Pages.
+
+Todas las rutas y recursos fueron ajustados para funcionar en producción.
+
+Token de API almacenado de forma segura en el cliente para pruebas educativas.
 
 ---
 
